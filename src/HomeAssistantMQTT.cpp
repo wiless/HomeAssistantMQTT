@@ -74,27 +74,27 @@ bool HomeAssistantMQTT::connected()
   return mqttClient->connected();
 }
 
-void HomeAssistantMQTT::publishConfigSensor(String deviceClass, String name, String icon, String unit, String startupValue)
+void HomeAssistantMQTT::publishConfigSensor(String deviceClass, String stateClass, String name, String icon, String unit, String startupValue)
 {
-  publishConfig("sensor", "", deviceClass, name, icon, unit, false, true, "", "", startupValue);
+  publishConfig("sensor", "", deviceClass, stateClass, name, icon, unit, false, true, "", "", startupValue);
 }
 
 void HomeAssistantMQTT::publishConfigBinarySensor(String deviceClass, String name, String icon, String payloadOff, String payloadOn, String startupValue)
 {
   String complement = ",\"payload_off\":\"" + payloadOff + "\",\"payload_on\":\"" + payloadOn + "\"";
-  publishConfig("binary_sensor", "", deviceClass, name, icon, "", false, true, "", complement, startupValue);
+  publishConfig("binary_sensor", "", deviceClass, "", name, icon, "", false, true, "", complement, startupValue);
 }
 
 void HomeAssistantMQTT::publishConfigNumber(String category, String name, String icon, String unit, String min, String max, String startupValue)
 {
   String complement = ",\"min\":" + min + ",\"max\":" + max + "";
-  publishConfig("number", category, "", name, icon, unit, true, true, "", complement, startupValue);
+  publishConfig("number", category, "", "", name, icon, unit, true, true, "", complement, startupValue);
 }
 
 void HomeAssistantMQTT::publishConfigButton(String category, String name, String icon, String commandTopicName, String payload)
 {
   String complement = ",\"payload_press\":\"" + payload + "\"";
-  publishConfig("button", category, "", name, icon, "", true, false, commandTopicName, complement, "");
+  publishConfig("button", category, "", "", name, icon, "", true, false, commandTopicName, complement, "");
 }
 
 void HomeAssistantMQTT::publishConfigSelect(String category, String name, String icon, String options[], unsigned short optionsCount, String startupValue)
@@ -105,7 +105,7 @@ void HomeAssistantMQTT::publishConfigSelect(String category, String name, String
     complement += (i > 0 ? "\",\"" : "") + options[i];
   }
   complement += "\"]";
-  publishConfig("select", category, "", name, icon, "", true, true, "", complement, startupValue);
+  publishConfig("select", category, "", "", name, icon, "", true, true, "", complement, startupValue);
 }
 
 void HomeAssistantMQTT::publishConfigSwitch(String category, String name, String icon, String startupValue)
@@ -114,10 +114,10 @@ void HomeAssistantMQTT::publishConfigSwitch(String category, String name, String
   nameForTopic.replace(" ", "_");
 
   String complement = ",\"payload_off\":\"false\",\"payload_on\":\"true\"";
-  publishConfig("switch", category, "", name, icon, "", true, true, "", complement, startupValue);
+  publishConfig("switch", category, "", "", name, icon, "", true, true, "", complement, startupValue);
 }
 
-void HomeAssistantMQTT::publishConfig(const char* type, String category, String deviceClass, String name, String icon, String unit, bool commandTopic, bool stateTopic, String commandTopicName, String complement, String startupValue)
+void HomeAssistantMQTT::publishConfig(const char* type, String category, String deviceClass, String stateClass, String name, String icon, String unit, bool commandTopic, bool stateTopic, String commandTopicName, String complement, String startupValue)
 {
   String nameForTopic = (name.length() > 0 ? name : deviceClass);
   nameForTopic.replace(" ", "_");
@@ -140,6 +140,7 @@ void HomeAssistantMQTT::publishConfig(const char* type, String category, String 
       + (icon.length() > 0 ? ",\"icon\":\"" + icon + "\"" : "")
       + (unit.length() > 0 ? ",\"unit_of_measurement\":\"" + unit + "\"" : "")
       + (deviceClass.length() > 0 ? ",\"device_class\":\"" + deviceClass + "\"" : "")
+      + (stateClass.length() > 0 ? ",\"state_class\":\"" + stateClass + "\"" : "")
 
       + complement
 
