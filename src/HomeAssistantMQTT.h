@@ -24,7 +24,7 @@ class HomeAssistantMQTT
     ItemValue* values[HAMQTT_MAXITEMS];
 
     void connect();
-    void publishConfig(const char* type, String category, String deviceClass, String name, String icon, String unit, bool commandTopic, bool stateTopic, String commandTopicName, String complement, String startupValue);
+    void publishConfig(const char* type, String category, String deviceClass, String stateClass, String name, String icon, String unit, bool commandTopic, bool stateTopic, String commandTopicName, String complement, String startupValue);
     void MqttCallback(char* topic, byte* payload, unsigned int length);
 
     typedef void (*CallbackFunction) (String item, String payload);
@@ -53,7 +53,7 @@ class HomeAssistantMQTT
     void setValue(String item, String value);
     String getValue(String item);
 
-    void publishConfigSensor(String deviceClass, String name, String icon, String unit, String startupValue);
+    void publishConfigSensor(String deviceClass, String stateClass, String name, String icon, String unit, String startupValue);
     void publishConfigBinarySensor(String deviceClass, String name, String icon, String payloadOff, String payloadOn, String startupValue);
     void publishConfigNumber(String category, String name, String icon, String unit, String min, String max, String startupValue);
     void publishConfigButton(String category, String name, String icon, String commandTopicName, String payload);

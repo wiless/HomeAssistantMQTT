@@ -77,9 +77,11 @@ The method name can be changed. Call publishMethodxxxxxxx functions to publish a
 ```c++
 void publishMqttConfig()
 {
-  mqtt.publishConfigSensor("", "Button", "mdi:gesture-tap-button", "", "None");
-  mqtt.publishConfigSensor("", "Position", "mdi:window-shutter-settings", "%", "0");
-  mqtt.publishConfigSensor("", "Status", "mdi:window-shutter", "", "Up");
+  mqtt.publishConfigSensor("", "", "Button", "mdi:gesture-tap-button", "", "None");
+  mqtt.publishConfigSensor("", "", "Position", "mdi:window-shutter-settings", "%", "0");
+  mqtt.publishConfigSensor("", "", "Status", "mdi:window-shutter", "", "Up");
+  mqtt.publishConfigSensor("temperature", "measurement", "Temperature", "", "°C", "None");
+  mqtt.publishConfigSensor("precipitation", "total_incresing", "Rain", "", "mm", "None");
   mqtt.publishConfigBinarySensor("smoke", "", "", "false", "true", "false");
   mqtt.publishConfigNumber("config", "Duration", "mdi:timer", "s", "0", "300", "25");
   mqtt.publishConfigNumber("config", "Shadow position", "mdi:window-shutter-alert", "%", "5", "95", "85");
@@ -122,10 +124,11 @@ Several methods are available to publish sensors, binary sensors, buttons, numbe
 A sensor will report values to Home Assistant that are not "ON/OFF" style.
 
 ```c++
-void publishConfigSensor(String deviceClass, String name, String icon, String unit, String startupValue);
+void publishConfigSensor(String deviceClass, String stateClass, String name, String icon, String unit, String startupValue);
 ```
 
 deviceClass: optional, for standardized sensors, use Home Assistant device class to benefit for default icons, names and units, otherwise leave empty (see https://www.home-assistant.io/integrations/sensor/#device-class)
+stateClass: optional, for standardized sensors
 name: name of the sensor, can be left empty if defining a device class
 icon: material design icon to illustrate the sensor, can be left empty if defining a device class (see https://pictogrammers.com/library/mdi/)
 unit: optional, unit of measurement, can be left empty if defining a device class
