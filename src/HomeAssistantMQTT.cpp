@@ -259,24 +259,21 @@ void HomeAssistantMQTT::sendValues()
   }
   ln++;
 
-  char* c = new char[ln];
-  strcpy(c, "{");
-  
+  String str;
+  str = str + "{";
   i = 0;
   while (i < HAMQTT_MAXITEMS)
   {
     if (values[i] != 0)
     {
-      strcat(c, "\"");
-      strcat(c, values[i]->item);
-      strcat(c, "\":\"");
-      strcat(c, values[i]->value);
-      strcat(c, "\",");
+      str = str + "\"" + values[i]->item + "\":\"" + values[i]->value + "\",";
     }
     i++;
   }
-  c[ln - 1] = '}';
-
+  str[ln - 1] = '}';
+  char c[ln];
+  str.toCharArray(c, ln + 1);
+  
   mqttClient->publish(StateTopic, c, true);
 }
 
