@@ -1,5 +1,6 @@
 #include "HomeAssistantMQTT.h"
 #define DEBUG
+#define CFG_ON_SERIAL
 
 HomeAssistantMQTT::HomeAssistantMQTT()
 {
@@ -38,7 +39,7 @@ void HomeAssistantMQTT::loop()
 {
   if (!mqttClient->connected())
     connect();
-
+  
   mqttClient->loop();
 }
 
@@ -49,7 +50,7 @@ void HomeAssistantMQTT::connect()
 #ifdef CFG_ON_SERIAL
     Serial.print("Attempting MQTT connection...");
 #endif
-    String mqttClientId = "";
+    String mqttClientId = DeviceName;
     if (mqttClient->connect(mqttClientId.c_str(), MqttUser.c_str(), MqttPassword.c_str(), MqttStateTopic, 1, true, "{\"state\":\"offline\"}"))
     {
       mqttClient->publish(MqttStateTopic, "{\"state\":\"online\"}", true);
@@ -151,9 +152,10 @@ void HomeAssistantMQTT::publishConfig(const char* type, String category, String 
 
       + "}";
 
-#ifdef DEBUG
-  Serial.println(topic.c_str());
+#ifdef CFG_ON_SERIAL
   Serial.print("  - ");
+  Serial.println(topic.c_str());
+  Serial.print("    ");
   Serial.println(data.c_str());
 #endif
 
@@ -174,47 +176,20 @@ void HomeAssistantMQTT::setValue(String item, String value)
   {
     if (values[i] != 0)
     {
-/*#ifdef DEBUG
-      Serial.print("Item #");
-      Serial.print(i);
-      Serial.print(", Name: \"");
-      Serial.print(values[i]->item);
-      Serial.println("\"");
-#endif*/
       if (strcmp(values[i]->item, item.c_str()) == 0)
       {
-/*#ifdef DEBUG
-        Serial.print("Found! Current value is: \"");
-        Serial.print(values[i]->value);
-        Serial.print("\", new value will be: \"");
-        Serial.print(value);
-        Serial.println("\"");
-#endif*/
-
         strcpy(values[i]->value, value.c_str());
-        //strncpy(values[i]->value, value.c_str(), value.length);
-        //values[i]->value[value.length] = '\0';
-        //values[i]->value = value;
         bFound = true;
       }
     }
     else
     {
-/*#ifdef DEBUG
-      Serial.print("Not found, adding ItemValue for item: \"");
-      Serial.print(item);
-      Serial.print("\", with value: \"");
-      Serial.print(value);
-      Serial.println("\"");
-#endif*/
       // if we reach an entry with pointer 0, that means we reached end of existing items and didn't find it. Now create a new one.
       ItemValue* iv = new ItemValue;
       iv->item = new char[31];
       iv->value = new char[31];
       strcpy(iv->item, item.c_str());
       strcpy(iv->value, value.c_str());
-      //iv->item = item;
-      //iv->value = value;
       values[i] = iv;
       bFound = true;
     }
@@ -321,6 +296,8 @@ void HomeAssistantMQTT::MqttCallback(char* topic, byte* payload, unsigned int le
         Serial.println("\"");
 #endif
         setValue(String(kv.key().c_str()), String(kv.value().as<const char*>()));
+        if (cb_callback != NULL)
+          cb_callback(String(kv.key().c_str()), String(kv.value().as<const char*>()), true);
       }
       sendValues();
     }
@@ -334,7 +311,8 @@ void HomeAssistantMQTT::MqttCallback(char* topic, byte* payload, unsigned int le
     {
       char buffer[strlen(topic + COMMAND_TOPIC.length())];
       strcpy(buffer, topic + COMMAND_TOPIC.length());
-      cb_callback(String(buffer), String(cPayload));
+      if (cb_callback != NULL)
+        cb_callback(String(buffer), String(cPayload), false);
     }
   }
 }

@@ -96,9 +96,11 @@ void publishMqttConfig()
   Serial.println("Publishing config:");
 #endif
   
-  mqtt.publishConfigSensor("", "Button", "mdi:gesture-tap-button", "", "None");
-  mqtt.publishConfigSensor("", "Position", "mdi:window-shutter-settings", "%", "0");
-  mqtt.publishConfigSensor("", "Status", "mdi:window-shutter", "", "Up");
+  mqtt.publishConfigSensor("", "", "Button", "mdi:gesture-tap-button", "", "None");
+  mqtt.publishConfigSensor("", "", "Position", "mdi:window-shutter-settings", "%", "0");
+  mqtt.publishConfigSensor("", "", "Status", "mdi:window-shutter", "", "Up");
+  mqtt.publishConfigSensor("temperature", "measurement", "Temperature", "", "°C", "None");
+  mqtt.publishConfigSensor("precipitation", "total_incresing", "Rain", "", "mm", "None");
   mqtt.publishConfigBinarySensor("smoke", "", "", "false", "true", "false");
   mqtt.publishConfigNumber("config", "Duration", "mdi:timer", "s", "0", "300", "25");
   mqtt.publishConfigNumber("config", "Shadow position", "mdi:window-shutter-alert", "%", "5", "95", "85");
@@ -112,13 +114,15 @@ void publishMqttConfig()
   mqtt.publishConfigSwitch("config", "Enabled", "mdi:blur", "true");
 }
 
-void HAMQTT_Callback(String item, String payload)
+void HAMQTT_Callback(String item, String payload, bool readFromMQTT)
 {
 #ifdef DEBUG
   Serial.print("Message arrived for item: '");
   Serial.print(item);
   Serial.print("' with payload: ");
   Serial.print(payload);
+  if (readFromMQTT)
+    Serial.print(" (read from MQTT)");
   Serial.println();
 #endif
 

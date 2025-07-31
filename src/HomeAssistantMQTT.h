@@ -27,7 +27,7 @@ class HomeAssistantMQTT
     void publishConfig(const char* type, String category, String deviceClass, String stateClass, String name, String icon, String unit, bool commandTopic, bool stateTopic, String commandTopicName, String complement, String startupValue);
     void MqttCallback(char* topic, byte* payload, unsigned int length);
 
-    typedef void (*CallbackFunction) (String item, String payload);
+    typedef void (*CallbackFunction) (String item, String payload, bool readFromMQTT);
     CallbackFunction cb_callback = NULL;
 
   public:
