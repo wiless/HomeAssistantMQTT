@@ -127,12 +127,12 @@ A sensor will report values to Home Assistant that are not "ON/OFF" style.
 void publishConfigSensor(String deviceClass, String stateClass, String name, String icon, String unit, String startupValue);
 ```
 
-deviceClass: optional, for standardized sensors, use Home Assistant device class to benefit for default icons, names and units, otherwise leave empty (see https://www.home-assistant.io/integrations/sensor/#device-class)
-stateClass: optional, for standardized sensors
-name: name of the sensor, can be left empty if defining a device class
-icon: material design icon to illustrate the sensor, can be left empty if defining a device class (see https://pictogrammers.com/library/mdi/)
-unit: optional, unit of measurement, can be left empty if defining a device class
-startupValue: value of the sensor at startup of the device, if no previous value can be read from MQTT state topic
+- deviceClass: optional, for standardized sensors, use Home Assistant device class to benefit for default icons, names and units, otherwise leave empty (see https://www.home-assistant.io/integrations/sensor/#device-class)
+- stateClass: optional, for standardized sensors
+- name: name of the sensor, can be left empty if defining a device class
+- icon: material design icon to illustrate the sensor, can be left empty if defining a device class (see https://pictogrammers.com/library/mdi/)
+- unit: optional, unit of measurement, can be left empty if defining a device class
+- startupValue: value of the sensor at startup of the device, if no previous value can be read from MQTT state topic
 
 ### publishConfigBinarySensor
 
@@ -142,12 +142,12 @@ A binary sensor is a sensor that only reports ON/OFF or true/false states.
 void publishConfigBinarySensor(String deviceClass, String name, String icon, String payloadOff, String payloadOn, String startupValue);
 ```
 
-deviceClass: optional, for standardized sensors, use Home Assistant device class to benefit for default icons, names and units, otherwise leave empty (see https://www.home-assistant.io/integrations/binary_sensor/#device-class)
-name: name of the sensor, can be left empty if defining a device class
-icon: material design icon to illustrate the sensor, can be left empty if defining a device class (see https://pictogrammers.com/library/mdi/)
-payloadOff: text value of the sensor when it reports OFF/false state
-payloadOn: text value of the sensor when it reports ON/true state
-startupValue: value of the sensor at startup of the device, if no previous value can be read from MQTT state topic
+- deviceClass: optional, for standardized sensors, use Home Assistant device class to benefit for default icons, names and units, otherwise leave empty (see https://www.home-assistant.io/integrations/binary_sensor/#device-class)
+- name: name of the sensor, can be left empty if defining a device class
+- icon: material design icon to illustrate the sensor, can be left empty if defining a device class (see https://pictogrammers.com/library/mdi/)
+- payloadOff: text value of the sensor when it reports OFF/false state
+- payloadOn: text value of the sensor when it reports ON/true state
+- startupValue: value of the sensor at startup of the device, if no previous value can be read from MQTT state topic
 
 ### publishConfigButton
 
@@ -157,11 +157,11 @@ A button doesn't keep any state, but permits to send commands from Home Assistan
 void publishConfigButton(String category, String name, String icon, String commandTopicName, String payload);
 ```
 
-category: config or diagnostic, or left empty, to define the group where this entity is diplayed in Home Assistant
-name: name of the button
-icon: material design icon to illustrate the button (see https://pictogrammers.com/library/mdi/)
-commandTopicName: the topic that will get the payload when user clicks the button, several buttons can share the same commandTopicName with different payloads
-payload: text value that will be sent to MQTT when the button is pressed
+- category: config or diagnostic, or left empty, to define the group where this entity is diplayed in Home Assistant
+- name: name of the button
+- icon: material design icon to illustrate the button (see https://pictogrammers.com/library/mdi/)
+- commandTopicName: the topic that will get the payload when user clicks the button, several buttons can share the same commandTopicName with different payloads
+- payload: text value that will be sent to MQTT when the button is pressed
 
 ### publishConfigNumber
 
@@ -171,13 +171,13 @@ Number is a numeric field allowing user to change a numeric value.
 void publishConfigNumber(String category, String name, String icon, String unit, String min, String max, String startupValue);
 ```
 
-category: config or diagnostic, or left empty, to define the group where this entity is diplayed in Home Assistant
-name: name of the button
-icon: material design icon to illustrate the button (see https://pictogrammers.com/library/mdi/)
-unit: optional, unit of measurement
-min: minimum accepted value
-max: maximum accepted value
-startupValue: value of the numeric field at startup of the device, if no previous value can be read from MQTT state topic
+- category: config or diagnostic, or left empty, to define the group where this entity is diplayed in Home Assistant
+- name: name of the button
+- icon: material design icon to illustrate the button (see https://pictogrammers.com/library/mdi/)
+- unit: optional, unit of measurement
+- min: minimum accepted value
+- max: maximum accepted value
+- startupValue: value of the numeric field at startup of the device, if no previous value can be read from MQTT state topic
 
 ### publishConfigSelect
 
@@ -187,12 +187,12 @@ Select is a dropdown list where user can pickup a predefined value.
 void publishConfigSelect(String category, String name, String icon, String options[], unsigned short optionsCount, String startupValue);
 ```
 
-category: config or diagnostic, or left empty, to define the group where this entity is diplayed in Home Assistant
-name: name of the button
-icon: material design icon to illustrate the button (see https://pictogrammers.com/library/mdi/)
-options: String array containing the list of predefined values
-optionsCount: number of predefined values in "options" array
-startupValue: value of the numeric field at startup of the device, if no previous value can be read from MQTT state topic
+- category: config or diagnostic, or left empty, to define the group where this entity is diplayed in Home Assistant
+- name: name of the button
+- icon: material design icon to illustrate the button (see https://pictogrammers.com/library/mdi/)
+- options: String array containing the list of predefined values
+- optionsCount: number of predefined values in "options" array
+- startupValue: value of the numeric field at startup of the device, if no previous value can be read from MQTT state topic
 
 ### publishConfigSwitch
 
@@ -202,7 +202,7 @@ Switch is an ON/OFF slider usually for enabling/activating options of the device
 void publishConfigSwitch(String category, String name, String icon, String startupValue);
 ```
 
-category: config or diagnostic, or left empty, to define the group where this entity is diplayed in Home Assistant
-name: name of the button
-icon: material design icon to illustrate the button (see https://pictogrammers.com/library/mdi/)
-startupValue: value of the numeric field at startup of the device, if no previous value can be read from MQTT state topic
+- category: config or diagnostic, or left empty, to define the group where this entity is diplayed in Home Assistant
+- name: name of the button
+- icon: material design icon to illustrate the button (see https://pictogrammers.com/library/mdi/)
+- startupValue: value of the numeric field at startup of the device, if no previous value can be read from MQTT state topic
